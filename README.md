@@ -56,3 +56,7 @@ c.Conn()
 ## /rpc
 
 Contains methods to communicate to Sumus node via RPC.
+
+## TODO
+- Logging;
+- Panic on pool.Close() instead of hanging (leaked connections);

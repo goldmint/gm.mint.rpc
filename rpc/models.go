@@ -3,8 +3,8 @@ package rpc
 import (
 	"math/big"
 
-	"github.com/void616/gm-sumus-lib/types"
-	"github.com/void616/gm-sumus-lib/types/amount"
+	sumuslib "github.com/void616/gm-sumuslib"
+	"github.com/void616/gm-sumuslib/amount"
 )
 
 // BlockchainStateResult model
@@ -30,7 +30,7 @@ type TransactionResult struct {
 	From   string
 	To     string
 	Amount *amount.Amount
-	Token  types.Token
+	Token  sumuslib.Token
 	Digest string
 	Status string
 }

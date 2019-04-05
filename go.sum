@@ -1,6 +1,6 @@
 github.com/mr-tron/base58 v1.1.0 h1:Y51FGVJ91WBqCEabAi5OPUz38eAx8DakuAm5svLcsfQ=
 github.com/mr-tron/base58 v1.1.0/go.mod h1:xcD2VGqlgYjBdcBLw+TuYLr8afG+Hj8g2eTVqeSzSU8=
-github.com/void616/gm-sumus-lib v1.0.0 h1:R5EKhyamOF299kRyQmUf/SBcXVSVpxZB//NGs3mYKJk=
-github.com/void616/gm-sumus-lib v1.0.0/go.mod h1:STTPzrTHjn6UbP6gDI+vQTtGrW+TlXIwTE9SHbla7fU=
+github.com/void616/gm-sumuslib v1.0.2 h1:6+yZPaCC+TYwj5WQg2JHiFiQQ73ueGl6nBZFfPVyNXo=
+github.com/void616/gm-sumuslib v1.0.2/go.mod h1:+08YwpaXBlYIacZUsi+ln1k1QexlV/P5ZkWl1PKy3ug=
 golang.org/x/crypto v0.0.0-20190123085648-057139ce5d2b h1:Elez2XeF2p9uyVj0yEUDqQ56NFcDtcBNkYP7yv8YbUE=
 golang.org/x/crypto v0.0.0-20190123085648-057139ce5d2b/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=

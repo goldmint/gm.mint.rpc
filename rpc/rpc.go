@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/void616/gm-sumus-lib/types"
-	"github.com/void616/gm-sumus-lib/types/amount"
+	sumuslib "github.com/void616/gm-sumuslib"
+	"github.com/void616/gm-sumuslib/amount"
 	"github.com/void616/gm-sumusrpc/conn"
 )
 
 // AddTransaction posts new transaction
-func AddTransaction(c *conn.Conn, t types.Transaction, hexdata string) (err error) {
+func AddTransaction(c *conn.Conn, t sumuslib.Transaction, hexdata string) (err error) {
 	err = nil
 
 	req := struct {
@@ -69,11 +69,11 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, err err
 	if perr := json.Unmarshal(*res.Balance, &balance); perr == nil {
 		for _, v := range balance {
 			if parsed := amount.NewFloatString(v.Amount); parsed != nil {
-				if token, perr := types.ParseToken(v.AssetCode); perr == nil {
+				if token, perr := sumuslib.ParseToken(v.AssetCode); perr == nil {
 					switch token {
-					case types.TokenMNT:
+					case sumuslib.TokenMNT:
 						state.Balance.Mnt = parsed
-					case types.TokenGOLD:
+					case sumuslib.TokenGOLD:
 						state.Balance.Gold = parsed
 					}
 				}

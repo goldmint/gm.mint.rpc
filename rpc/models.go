@@ -55,3 +55,9 @@ type NodeResult struct {
 	Address string
 	IP      string
 }
+
+// WalletTransactionsResult model
+type WalletTransactionsResult struct {
+	Digest string
+	Status string
+}

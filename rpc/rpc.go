@@ -240,3 +240,36 @@ func Nodes(c *conn.Conn) (nodes []NodeResult, err error) {
 	}
 	return
 }
+
+// WalletTransactions returns wallet incoming/outgoing transaction list
+func WalletTransactions(c *conn.Conn, count uint16, address string) (list []WalletTransactionsResult, err error) {
+
+	list, err = make([]WalletTransactionsResult, 0), nil
+
+	req := struct {
+		PublicKey string `json:"public_key,omitempty"`
+		Count     string `json:"count,omitempty"`
+	}{
+		address, fmt.Sprintf("%v", count),
+	}
+	type Item struct {
+		Digest string `json:"digest,omitempty"`
+		Type   string `json:"type,omitempty"`
+	}
+	res := struct {
+		TxList []Item `json:"transaction_list,omitempty"`
+	}{}
+
+	err = RawCall(c, "get-wallet-transactions", &req, &res)
+	if err != nil {
+		return
+	}
+
+	for _, v := range res.TxList {
+		list = append(list, WalletTransactionsResult{
+			Digest: v.Digest,
+			Status: v.Type,
+		})
+	}
+	return
+}

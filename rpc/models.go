@@ -20,6 +20,13 @@ type BlockchainStateResult struct {
 	BlockchainState         string
 	ConsensusRound          string
 	VotingNodes             string
+	Balance                 BlockchainBalanceResult
+}
+
+// BlockchainBalanceResult model
+type BlockchainBalanceResult struct {
+	Gold *amount.Amount
+	Mnt  *amount.Amount
 }
 
 // TransactionResult model

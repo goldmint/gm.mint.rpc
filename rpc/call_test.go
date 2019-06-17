@@ -7,7 +7,7 @@ import (
 	"github.com/void616/gm-sumusrpc/conn"
 )
 
-var node = ":4010"
+var node = "127.0.0.1:4010"
 
 func TestRawCall(t *testing.T) {
 
@@ -31,7 +31,7 @@ func TestRawCall(t *testing.T) {
 	}
 	var res *json.RawMessage
 
-	if err := RawCall(c, "get-wallet-transactions", &req, &res); err != nil {
+	if err := RawCall(c, "get-blockchain-state", &req, &res); err != nil {
 		t.Fatal(err)
 	}
 	t.Log(string([]byte(*res)))

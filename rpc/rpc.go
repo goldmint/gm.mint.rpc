@@ -105,6 +105,7 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 		BlockchainState:         "",
 		ConsensusRound:          "",
 		VotingNodes:             "",
+		Balance:                 BlockchainBalanceResult{},
 	}, nil
 
 	req := struct{}{}
@@ -120,6 +121,10 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 		BlockchainState         string `json:"blockchain_state,omitempty"`
 		ConsensusRound          string `json:"consensus_round,omitempty"`
 		VotingNodes             string `json:"voting_nodes,omitempty"`
+		Balance                 struct {
+			Mnt  *amount.Amount `json:"mnt,omitempty"`
+			Gold *amount.Amount `json:"gold,omitempty"`
+		} `json:"balance,omitempty"`
 	}{}
 
 	err = RawCall(c, "get-blockchain-state", &req, &res)
@@ -180,6 +185,8 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 	state.BlockchainState = res.BlockchainState
 	state.ConsensusRound = res.ConsensusRound
 	state.VotingNodes = res.VotingNodes
+	state.Balance.Mnt = res.Balance.Mnt
+	state.Balance.Gold = res.Balance.Gold
 
 	return
 }

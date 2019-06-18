@@ -24,9 +24,9 @@ func AddTransaction(c *conn.Conn, t sumuslib.Transaction, hexdata string) (resul
 		hexdata,
 	}
 	res := struct {
-		AddedToVotingPool   int    `json:"added_to_voting_pool,omitempty"`
-		VotingPoolCapacity  uint32 `json:"number_of_remaining_voting_transactions,omitempty"`
-		PendingPoolCapacity uint32 `json:"number_of_remaining_pending_transactions,omitempty"`
+		AddedToVotingPool   int    `json:"added_to_voting_pool,string,omitempty"`
+		VotingPoolCapacity  uint32 `json:"number_of_remaining_voting_transactions,string,omitempty"`
+		PendingPoolCapacity uint32 `json:"number_of_remaining_pending_transactions,string,omitempty"`
 	}{}
 
 	code, err = RawCall(c, "add-transaction", &req, &res)
@@ -62,8 +62,8 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, code Er
 		Tags              *json.RawMessage `json:"tags,omitempty"`
 	}{}
 	type BalanceItem struct {
-		AssetCode string `json:"asset_code,omitempty"`
-		Amount    string `json:"amount,omitempty"`
+		AssetCode string `json:"asset_code,string,omitempty"`
+		Amount    string `json:"amount,string,omitempty"`
 	}
 
 	code, err = RawCall(c, "get-wallet-state", &req, &res)

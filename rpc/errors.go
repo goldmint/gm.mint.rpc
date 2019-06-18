@@ -90,7 +90,7 @@ var errorCodeDesc = map[ErrorCode]string{
 	ECBlockNotFound:                    "Blockchain manager error: block not found in DB",
 	ECConsensusIsAlreadyStarted:        "Synchronization error: consensus is already started",
 	ECSynchronizationIsAlreadyStarted:  "Synchronization error: synchronization is already started",
-	ECBadNodeCount:                     "Synchronization error: bad node count: number of nodes is greater than number of nodes for voting",
+	ECBadNodeCount:                     "Synchronization error: bad node count, number of nodes is greater than number of nodes for voting",
 	ECUnknownNode:                      "Synchronization error: specified node for manual synchronization is not found in blockchain",
 	ECTransactionNotSigned:             "Transaction pool error: transaction is not signed",
 	ECBadTransactionSignature:          "Transaction pool error: bad transaction signature",
@@ -103,4 +103,29 @@ var errorCodeDesc = map[ErrorCode]string{
 	ECTransactionIDExistsInVotingPool:  "Transaction pool error: transaction with specified ID already exists in voting pool",
 	ECTransactionIDExistsInPendingPool: "Transaction pool error: transaction with specified ID already exists in pending pool",
 	ECMaxSizeOfTransactionPackExceeded: "Transaction pool error: max size of transaction pack exceeded",
+}
+
+// ---
+
+// AddTransactionErrorCode is a special wrapper for RPC error
+type AddTransactionErrorCode ErrorCode
+
+// AddedAlready returns true in case the transaction is already in pending/voting pool (added before)
+func (atec AddTransactionErrorCode) AddedAlready() bool {
+	return ErrorCode(atec) == ECTransactionIDExistsInVotingPool || ErrorCode(atec) == ECTransactionIDExistsInPendingPool
+}
+
+// NonceBehind returns true in case sent transaction has wrong ID (ID <= latest approved ID)
+func (atec AddTransactionErrorCode) NonceBehind() bool {
+	return ErrorCode(atec) == ECBadTransactionID
+}
+
+// NonceAhead returns true in case sent transaction has wrong ID (ID >> ID allowed for this wallet in this block)
+func (atec AddTransactionErrorCode) NonceAhead() bool {
+	return ErrorCode(atec) == ECBadTransactionDeltaID
+}
+
+// WalletInconsistency returns true in case the sending wallet doesn't exist or hasn't enough funds/tags for the transaction
+func (atec AddTransactionErrorCode) WalletInconsistency() bool {
+	return ErrorCode(atec) == ECBadTransaction || ErrorCode(atec) == ECTransactionWalletNotFound
 }

@@ -7,6 +7,13 @@ import (
 	"github.com/void616/gm-sumuslib/amount"
 )
 
+// AddTransactionResult model
+type AddTransactionResult struct {
+	AddedToVotingPool   bool
+	VotingPoolCapacity  uint32
+	PendingPoolCapacity uint32
+}
+
 // BlockchainStateResult model
 type BlockchainStateResult struct {
 	BlockCount              *big.Int

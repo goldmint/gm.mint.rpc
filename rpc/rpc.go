@@ -11,9 +11,10 @@ import (
 	"github.com/void616/gm-sumusrpc/conn"
 )
 
-// AddTransaction posts new transaction
-func AddTransaction(c *conn.Conn, t sumuslib.Transaction, hexdata string) (err error) {
-	err = nil
+// AddTransaction posts a new transaction
+func AddTransaction(c *conn.Conn, t sumuslib.Transaction, hexdata string) (result AddTransactionResult, code ErrorCode, err error) {
+	code, err = ECUnclassified, nil
+	result = AddTransactionResult{}
 
 	req := struct {
 		TransactionName string `json:"transaction_name,omitempty"`
@@ -22,20 +23,32 @@ func AddTransaction(c *conn.Conn, t sumuslib.Transaction, hexdata string) (err e
 		t.String(),
 		hexdata,
 	}
-	res := struct{}{}
+	res := struct {
+		AddedToVotingPool   int    `json:"added_to_voting_pool,omitempty"`
+		VotingPoolCapacity  uint32 `json:"number_of_remaining_voting_transactions,omitempty"`
+		PendingPoolCapacity uint32 `json:"number_of_remaining_pending_transactions,omitempty"`
+	}{}
 
-	err = RawCall(c, "add-transaction", &req, &res)
+	code, err = RawCall(c, "add-transaction", &req, &res)
+	if code != ECSuccess || err != nil {
+		return
+	}
+
+	result.AddedToVotingPool = res.AddedToVotingPool == 1
+	result.VotingPoolCapacity = res.VotingPoolCapacity
+	result.PendingPoolCapacity = res.PendingPoolCapacity
 	return
 }
 
 // WalletState gets state of specific wallet
-func WalletState(c *conn.Conn, address string) (state WalletStateResult, err error) {
-	state, err = WalletStateResult{
+func WalletState(c *conn.Conn, address string) (state WalletStateResult, code ErrorCode, err error) {
+	code, err = ECUnclassified, nil
+	state = WalletStateResult{
 		Balance: WalletBalanceResult{
 			Gold: amount.NewInteger(0),
 			Mnt:  amount.NewInteger(0),
 		},
-	}, nil
+	}
 
 	req := struct {
 		PublicKey string `json:"public_key,omitempty"`
@@ -53,8 +66,8 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, err err
 		Amount    string `json:"amount,omitempty"`
 	}
 
-	err = RawCall(c, "get-wallet-state", &req, &res)
-	if err != nil {
+	code, err = RawCall(c, "get-wallet-state", &req, &res)
+	if code != ECSuccess || err != nil {
 		return
 	}
 
@@ -63,7 +76,6 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, err err
 		err = fmt.Errorf("Balance field not set")
 		return
 	}
-
 	// balance is array or string - try parse as array
 	balance := []BalanceItem{}
 	if perr := json.Unmarshal(*res.Balance, &balance); perr == nil {
@@ -80,11 +92,9 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, err err
 			}
 		}
 	}
-
 	// tags is array or string - try parse as array
 	tags := []string{}
 	json.Unmarshal(*res.Tags, &tags)
-
 	state.Exists = res.Exist == 1
 	state.ApprovedNonce = res.LastTransactionID
 	state.Tags = tags
@@ -92,8 +102,9 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, err err
 }
 
 // BlockchainState gets blockchain state info
-func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
-	state, err = BlockchainStateResult{
+func BlockchainState(c *conn.Conn) (state BlockchainStateResult, code ErrorCode, err error) {
+	code, err = ECUnclassified, nil
+	state = BlockchainStateResult{
 		BlockCount:              new(big.Int),
 		LastBlockDigest:         "",
 		LastBlockMerkleRoot:     "",
@@ -106,7 +117,7 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 		ConsensusRound:          "",
 		VotingNodes:             "",
 		Balance:                 BlockchainBalanceResult{},
-	}, nil
+	}
 
 	req := struct{}{}
 	res := struct {
@@ -127,8 +138,8 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 		} `json:"balance,omitempty"`
 	}{}
 
-	err = RawCall(c, "get-blockchain-state", &req, &res)
-	if err != nil {
+	code, err = RawCall(c, "get-blockchain-state", &req, &res)
+	if code != ECSuccess || err != nil {
 		return
 	}
 
@@ -139,7 +150,6 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 		err = errors.New("Failed to parse blocks count")
 		return
 	}
-
 	// tx count
 	if i, ok := new(big.Int).SetString(res.TransactionCount, 10); ok {
 		state.TransactionCount = i
@@ -147,15 +157,13 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 		err = errors.New("Failed to parse transactions count")
 		return
 	}
-
-	// node count
+	// nodes count
 	if i, ok := new(big.Int).SetString(res.NodeCount, 10); ok {
 		state.NodeCount = i
 	} else {
 		err = errors.New("Faield to parse nodes count")
 		return
 	}
-
 	// non-empty wallets
 	if i, ok := new(big.Int).SetString(res.NonEmptyWalletCount, 10); ok {
 		state.NonEmptyWalletCount = i
@@ -163,7 +171,6 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 		err = errors.New("Faield to parse non-empty wallets count")
 		return
 	}
-
 	// voting transactions
 	if i, ok := new(big.Int).SetString(res.VotingTransactionCount, 10); ok {
 		state.VotingTransactionCount = i
@@ -171,7 +178,6 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 		err = errors.New("Faield to parse voting transactions count")
 		return
 	}
-
 	// pending transactions
 	if i, ok := new(big.Int).SetString(res.PendingTransactionCount, 10); ok {
 		state.PendingTransactionCount = i
@@ -179,7 +185,7 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 		err = errors.New("Faield to parse pending transactions count")
 		return
 	}
-
+	// other
 	state.LastBlockDigest = res.LastBlockDigest
 	state.LastBlockMerkleRoot = res.LastBlockMerkleRoot
 	state.BlockchainState = res.BlockchainState
@@ -187,13 +193,13 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, err error) {
 	state.VotingNodes = res.VotingNodes
 	state.Balance.Mnt = res.Balance.Mnt
 	state.Balance.Gold = res.Balance.Gold
-
 	return
 }
 
-// BlockData gets raw block data by ID
-func BlockData(c *conn.Conn, id *big.Int) (data string, err error) {
-	data, err = "", nil
+// BlockData gets raw block data (hex) by ID
+func BlockData(c *conn.Conn, id *big.Int) (data string, code ErrorCode, err error) {
+	code, err = ECUnclassified, nil
+	data = ""
 
 	req := struct {
 		BlockID string `json:"block_id,omitempty"`
@@ -204,18 +210,19 @@ func BlockData(c *conn.Conn, id *big.Int) (data string, err error) {
 		BlockData string `json:"block_data,omitempty"`
 	}{}
 
-	err = RawCall(c, "get-block", &req, &res)
-	if err != nil {
+	code, err = RawCall(c, "get-block", &req, &res)
+	if code != ECSuccess || err != nil {
 		return
 	}
+
 	data = res.BlockData
 	return
 }
 
 // Nodes gets blockchain nodes list
-func Nodes(c *conn.Conn) (nodes []NodeResult, err error) {
-
-	nodes, err = make([]NodeResult, 0), nil
+func Nodes(c *conn.Conn) (nodes []NodeResult, code ErrorCode, err error) {
+	code, err = ECUnclassified, nil
+	nodes = make([]NodeResult, 0)
 
 	req := struct{}{}
 	type Item struct {
@@ -227,8 +234,8 @@ func Nodes(c *conn.Conn) (nodes []NodeResult, err error) {
 		NodeList []Item `json:"node_list,omitempty"`
 	}{}
 
-	err = RawCall(c, "get-nodes", &req, &res)
-	if err != nil {
+	code, err = RawCall(c, "get-nodes", &req, &res)
+	if code != ECSuccess || err != nil {
 		return
 	}
 
@@ -237,7 +244,6 @@ func Nodes(c *conn.Conn) (nodes []NodeResult, err error) {
 		err = fmt.Errorf("Node list is empty")
 		return
 	}
-
 	for _, v := range res.NodeList {
 		nodes = append(nodes, NodeResult{
 			Index:   v.Index,
@@ -249,9 +255,9 @@ func Nodes(c *conn.Conn) (nodes []NodeResult, err error) {
 }
 
 // WalletTransactions returns wallet incoming/outgoing transaction list
-func WalletTransactions(c *conn.Conn, count uint16, address string) (list []WalletTransactionsResult, err error) {
-
-	list, err = make([]WalletTransactionsResult, 0), nil
+func WalletTransactions(c *conn.Conn, count uint16, address string) (list []WalletTransactionsResult, code ErrorCode, err error) {
+	code, err = ECUnclassified, nil
+	list = make([]WalletTransactionsResult, 0)
 
 	req := struct {
 		PublicKey string `json:"public_key,omitempty"`
@@ -267,8 +273,8 @@ func WalletTransactions(c *conn.Conn, count uint16, address string) (list []Wall
 		TxList []Item `json:"transaction_list,omitempty"`
 	}{}
 
-	err = RawCall(c, "get-wallet-transactions", &req, &res)
-	if err != nil {
+	code, err = RawCall(c, "get-wallet-transactions", &req, &res)
+	if code != ECSuccess || err != nil {
 		return
 	}
 

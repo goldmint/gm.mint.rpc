@@ -57,8 +57,8 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, code Er
 	}
 	res := struct {
 		Balance           json.RawMessage `json:"balance,omitempty"`
-		Exist             int              `json:"exist,string,omitempty"`
-		LastTransactionID uint64           `json:"last_transaction_id,string,omitempty"`
+		Exist             int             `json:"exist,string,omitempty"`
+		LastTransactionID uint64          `json:"last_transaction_id,string,omitempty"`
 		Tags              json.RawMessage `json:"tags,omitempty"`
 	}{}
 	type BalanceItem struct {
@@ -91,9 +91,6 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, code Er
 				}
 			}
 		}
-	} else {
-		err = perr
-		return
 	}
 	// tags is array or string - try parse as array
 	tags := []string{}

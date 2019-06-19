@@ -56,14 +56,14 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, code Er
 		address,
 	}
 	res := struct {
-		Balance           *json.RawMessage `json:"balance,omitempty"`
+		Balance           json.RawMessage `json:"balance,omitempty"`
 		Exist             int              `json:"exist,string,omitempty"`
 		LastTransactionID uint64           `json:"last_transaction_id,string,omitempty"`
-		Tags              *json.RawMessage `json:"tags,omitempty"`
+		Tags              json.RawMessage `json:"tags,omitempty"`
 	}{}
 	type BalanceItem struct {
-		AssetCode string `json:"asset_code,string,omitempty"`
-		Amount    string `json:"amount,string,omitempty"`
+		AssetCode string `json:"asset_code,omitempty"`
+		Amount    string `json:"amount,omitempty"`
 	}
 
 	code, err = RawCall(c, "get-wallet-state", &req, &res)
@@ -73,12 +73,12 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, code Er
 
 	// balance exists
 	if res.Balance == nil {
-		err = fmt.Errorf("Balance field not set")
+		err = fmt.Errorf("balance field not set")
 		return
 	}
 	// balance is array or string - try parse as array
 	balance := []BalanceItem{}
-	if perr := json.Unmarshal(*res.Balance, &balance); perr == nil {
+	if perr := json.Unmarshal(res.Balance, &balance); perr == nil {
 		for _, v := range balance {
 			if parsed := amount.NewFloatString(v.Amount); parsed != nil {
 				if token, perr := sumuslib.ParseToken(v.AssetCode); perr == nil {
@@ -91,10 +91,13 @@ func WalletState(c *conn.Conn, address string) (state WalletStateResult, code Er
 				}
 			}
 		}
+	} else {
+		err = perr
+		return
 	}
 	// tags is array or string - try parse as array
 	tags := []string{}
-	json.Unmarshal(*res.Tags, &tags)
+	json.Unmarshal(res.Tags, &tags)
 	state.Exists = res.Exist == 1
 	state.ApprovedNonce = res.LastTransactionID
 	state.Tags = tags
@@ -147,42 +150,42 @@ func BlockchainState(c *conn.Conn) (state BlockchainStateResult, code ErrorCode,
 	if i, ok := new(big.Int).SetString(res.BlockCount, 10); ok {
 		state.BlockCount = i
 	} else {
-		err = errors.New("Failed to parse blocks count")
+		err = errors.New("failed to parse blocks count")
 		return
 	}
 	// tx count
 	if i, ok := new(big.Int).SetString(res.TransactionCount, 10); ok {
 		state.TransactionCount = i
 	} else {
-		err = errors.New("Failed to parse transactions count")
+		err = errors.New("failed to parse transactions count")
 		return
 	}
 	// nodes count
 	if i, ok := new(big.Int).SetString(res.NodeCount, 10); ok {
 		state.NodeCount = i
 	} else {
-		err = errors.New("Faield to parse nodes count")
+		err = errors.New("failed to parse nodes count")
 		return
 	}
 	// non-empty wallets
 	if i, ok := new(big.Int).SetString(res.NonEmptyWalletCount, 10); ok {
 		state.NonEmptyWalletCount = i
 	} else {
-		err = errors.New("Faield to parse non-empty wallets count")
+		err = errors.New("failed to parse non-empty wallets count")
 		return
 	}
 	// voting transactions
 	if i, ok := new(big.Int).SetString(res.VotingTransactionCount, 10); ok {
 		state.VotingTransactionCount = i
 	} else {
-		err = errors.New("Faield to parse voting transactions count")
+		err = errors.New("failed to parse voting transactions count")
 		return
 	}
 	// pending transactions
 	if i, ok := new(big.Int).SetString(res.PendingTransactionCount, 10); ok {
 		state.PendingTransactionCount = i
 	} else {
-		err = errors.New("Faield to parse pending transactions count")
+		err = errors.New("failed to parse pending transactions count")
 		return
 	}
 	// other
@@ -241,7 +244,7 @@ func Nodes(c *conn.Conn) (nodes []NodeResult, code ErrorCode, err error) {
 
 	// list exists
 	if res.NodeList == nil || len(res.NodeList) == 0 {
-		err = fmt.Errorf("Node list is empty")
+		err = fmt.Errorf("node list is empty")
 		return
 	}
 	for _, v := range res.NodeList {

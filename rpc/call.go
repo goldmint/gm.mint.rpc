@@ -47,7 +47,7 @@ func RawCall(c *conn.Conn, command string, req interface{}, res interface{}) (co
 		return
 	}
 
-	//log.Print("RPC\n", ">>\n", hex.Dump(rpcReqBytes), "<<\n", hex.Dump(rpcResBytes))
+	//log.Print("RPC RESPONSE:\n", hex.Dump(resBytes))
 
 	// parse node reponse
 	resModel := rpcResponse{Params: res}

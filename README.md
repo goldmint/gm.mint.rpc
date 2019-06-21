@@ -126,5 +126,5 @@ if rpcCode != rpc.ECSuccess {
 
 
 ## TODO
-[ ] Pool tests
-[ ] Panic on pool.Close() instead of hanging (leaked/unreleased connections)
+- Pool tests
+- Panic on pool.Close() instead of hanging (leaked/unreleased connections)

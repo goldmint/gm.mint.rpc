@@ -98,7 +98,7 @@ if rpcCode != rpc.ECSuccess {
 
 ## RPC error codes
 | Name                                 | Code | Description |
-| ---                                  | ---* | --- |
+| ---                                  | ---: | --- |
 | `ECSuccess`                          | `0`  | Success |
 | `ECUnclassified`                     | `1`  | Unclassified error |
 | `ECJSONBadRequest`                   | `10` | JSON request error: bad request that cannot be parsed |

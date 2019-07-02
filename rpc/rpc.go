@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"unicode"
 
 	sumuslib "github.com/void616/gm-sumuslib"
 	"github.com/void616/gm-sumuslib/amount"
@@ -266,8 +267,9 @@ func WalletTransactions(c *conn.Conn, count uint16, address string) (list []Wall
 		address, fmt.Sprintf("%v", count),
 	}
 	type Item struct {
-		Digest string `json:"digest,omitempty"`
-		Type   string `json:"type,omitempty"`
+		Description string `json:"description,omitempty"`
+		Digest      string `json:"digest,omitempty"`
+		Type        string `json:"type,omitempty"`
 	}
 	res := struct {
 		TxList []Item `json:"transaction_list,omitempty"`
@@ -279,10 +281,38 @@ func WalletTransactions(c *conn.Conn, count uint16, address string) (list []Wall
 	}
 
 	for _, v := range res.TxList {
+		from, to, nonce, dummy := "", "", uint64(0), ""
+
+		rarr := []rune(v.Description)
+		for i, v := range rarr {
+			if !unicode.IsDigit(v) && !unicode.IsLetter(v) && v != '.' {
+				rarr[i] = ' '
+			}
+		}
+		// TransferAssetsTransaction ID 65  Q8Uz1RmhXF6PCw2RAGKUCR8yQMAaMJDGSxPkKoyfAvr3svs41  247jCgpxw5VMZsXe1kPHuFpeVdWGqUDpfmDznG2ebNar8hzWYq  19.096357648835176946 mnt
+		n, serr := fmt.Sscanf(
+			string(rarr),
+			"%s %s %d %s %s",
+			&dummy, &dummy, &nonce, &from, &to,
+		)
+		if serr != nil {
+			err = serr
+			return
+		}
+		if n != 5 {
+			err = errors.New("failed to parse description")
+			return
+		}
+
 		list = append(list, WalletTransactionsResult{
+			From:   from,
+			To:     to,
+			Nonce:  nonce,
 			Digest: v.Digest,
 			Status: v.Type,
 		})
 	}
 	return
 }
+
+// TransferAssetsTransaction(ID=65, Q8Uz1RmhXF6PCw2RAGKUCR8yQMAaMJDGSxPkKoyfAvr3svs41->247jCgpxw5VMZsXe1kPHuFpeVdWGqUDpfmDznG2ebNar8hzWYq, 19.096357648835176946 mnt)

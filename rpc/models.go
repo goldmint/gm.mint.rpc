@@ -72,6 +72,9 @@ type NodeResult struct {
 
 // WalletTransactionsResult model
 type WalletTransactionsResult struct {
+	From   string
+	To     string
+	Nonce  uint64
 	Digest string
 	Status string
 }

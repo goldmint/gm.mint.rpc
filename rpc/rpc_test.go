@@ -101,3 +101,11 @@ func TestAddTransaction(t *testing.T) {
 		"\nResult:\n", jsony(t, v),
 	)
 }
+
+func TestWalletTransactions(t *testing.T) {
+	v, code, err := WalletTransactions(connect(t), 1000, testRecipient)
+	if err != nil {
+		t.Fatal("Fail:", err)
+	}
+	t.Logf("Code: %d %v, Result:\n%v", code, code, jsony(t, v))
+}

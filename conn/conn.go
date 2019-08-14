@@ -199,7 +199,7 @@ func (r *Conn) sendMessage(data []byte) (err error) {
 		return
 	}
 	if n != len(data) {
-		err = fmt.Errorf("Failed to write exact amount of data bytes. Written %v, expected %v", n, len(data))
+		err = fmt.Errorf("failed to write exact amount of data bytes, written %v, expected %v", n, len(data))
 		return
 	}
 
@@ -209,7 +209,7 @@ func (r *Conn) sendMessage(data []byte) (err error) {
 		return
 	}
 	if n != 1 {
-		err = fmt.Errorf("Failed to write terminator")
+		err = fmt.Errorf("failed to write terminator")
 		return
 	}
 

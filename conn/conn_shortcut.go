@@ -10,12 +10,12 @@ import (
 // SendThenReceiveMessage shortcut
 func (r *Conn) SendThenReceiveMessage(msg []byte, id string) ([]byte, error) {
 	if r.Closing() {
-		return nil, fmt.Errorf("Connection is closed")
+		return nil, fmt.Errorf("connection is closed")
 	}
 
 	ch := r.Subscribe()
 	if ch == nil {
-		return nil, fmt.Errorf("Connection is closed?")
+		return nil, fmt.Errorf("connection is closed?")
 	}
 	defer r.Unsubscribe()
 
@@ -26,7 +26,7 @@ func (r *Conn) SendThenReceiveMessage(msg []byte, id string) ([]byte, error) {
 
 	for {
 		if r.Closing() {
-			return nil, fmt.Errorf("Connection is closed")
+			return nil, fmt.Errorf("connection is closed")
 		}
 
 		var data []byte
@@ -34,11 +34,11 @@ func (r *Conn) SendThenReceiveMessage(msg []byte, id string) ([]byte, error) {
 		select {
 		case evt := <-ch:
 			if evt.Error != nil {
-				return nil, fmt.Errorf("Message receiving timeout")
+				return nil, fmt.Errorf("message receiving timeout")
 			}
 			data = evt.Message
 		case <-time.After(r.recvTimeout):
-			return nil, fmt.Errorf("Message receiving timeout")
+			return nil, fmt.Errorf("message receiving timeout")
 		}
 
 		// get response as json
@@ -51,14 +51,14 @@ func (r *Conn) SendThenReceiveMessage(msg []byte, id string) ([]byte, error) {
 		// check id field
 		jid, ok := model["id"]
 		if !ok {
-			return nil, fmt.Errorf("Failed to find `id` field")
+			return nil, fmt.Errorf("failed to find `id` field")
 		}
 
 		// get id field as string
 		sid := ""
 		err = json.Unmarshal(*jid, &sid)
 		if err != nil {
-			return nil, fmt.Errorf("Failed to parse `id` field")
+			return nil, fmt.Errorf("failed to parse `id` field")
 		}
 
 		// test id
@@ -71,7 +71,7 @@ func (r *Conn) SendThenReceiveMessage(msg []byte, id string) ([]byte, error) {
 // Heartbeat shortcut
 func (r *Conn) Heartbeat() error {
 	if r.Closing() {
-		return fmt.Errorf("Connection is closed")
+		return fmt.Errorf("connection is closed")
 	}
 
 	// send
@@ -85,7 +85,7 @@ func (r *Conn) Heartbeat() error {
 
 	// response check
 	if !bytes.Contains(b, []byte(`"block_count"`)) {
-		return fmt.Errorf("Unexpected response")
+		return fmt.Errorf("unexpected response")
 	}
 	return nil
 }

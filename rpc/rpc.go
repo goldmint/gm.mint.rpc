@@ -314,5 +314,3 @@ func WalletTransactions(c *conn.Conn, count uint16, address string) (list []Wall
 	}
 	return
 }
-
-// TransferAssetsTransaction(ID=65, Q8Uz1RmhXF6PCw2RAGKUCR8yQMAaMJDGSxPkKoyfAvr3svs41->247jCgpxw5VMZsXe1kPHuFpeVdWGqUDpfmDznG2ebNar8hzWYq, 19.096357648835176946 mnt)

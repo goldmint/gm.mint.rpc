@@ -9,8 +9,8 @@ type DefaultBalancer struct {
 	Balancer
 }
 
-// Switch picks a node from the pool of nodes
-func (b *DefaultBalancer) get(nodes map[string]*nodePool) (*nodePool, error) {
+// Get picks a node from the pool of nodes
+func (b *DefaultBalancer) Get(nodes map[string]*NodePool) (*NodePool, error) {
 	at := ""
 	weight := int64((^uint64(0)) >> 1)
 	for i, p := range nodes {
@@ -24,7 +24,7 @@ func (b *DefaultBalancer) get(nodes map[string]*nodePool) (*nodePool, error) {
 	}
 
 	if at == "" {
-		return nil, fmt.Errorf("Unfortunately, there isn't a free node")
+		return nil, fmt.Errorf("failed to find a free node")
 	}
 
 	return nodes[at], nil

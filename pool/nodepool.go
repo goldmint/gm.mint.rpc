@@ -10,8 +10,8 @@ import (
 	"github.com/void616/gm-sumusrpc/conn"
 )
 
-// nodePool is a connections pool of any single node
-type nodePool struct {
+// NodePool is a connections pool of any single node
+type NodePool struct {
 	endpoint           string
 	connOpts           conn.Options
 	closeFlag          *int32
@@ -26,8 +26,8 @@ type nodePool struct {
 }
 
 // newNodePool creates new NodePool instance
-func newNodePool(endpoint string, copts conn.Options, maxConns int32) *nodePool {
-	ret := &nodePool{
+func newNodePool(endpoint string, copts conn.Options, maxConns int32) *NodePool {
+	ret := &NodePool{
 		endpoint:           endpoint,
 		connOpts:           copts,
 		closeFlag:          new(int32),
@@ -53,12 +53,12 @@ func newNodePool(endpoint string, copts conn.Options, maxConns int32) *nodePool 
 }
 
 // NotifyClose pool
-func (p *nodePool) NotifyClose() {
+func (p *NodePool) NotifyClose() {
 	atomic.StoreInt32(p.closeFlag, 1)
 }
 
 // Close pool
-func (p *nodePool) Close() error {
+func (p *NodePool) Close() error {
 	atomic.StoreInt32(p.closeFlag, 1)
 	p.routineWG.Wait()
 	close(p.requestChan)
@@ -68,12 +68,12 @@ func (p *nodePool) Close() error {
 }
 
 // Available check
-func (p *nodePool) Available() bool {
+func (p *NodePool) Available() bool {
 	return atomic.LoadInt32(p.availableFlag) != 0
 }
 
 // Get connection
-func (p *nodePool) Get(timeout time.Duration) (*Conn, error) {
+func (p *NodePool) Get(timeout time.Duration) (*Conn, error) {
 
 	if p.closing() {
 		return nil, fmt.Errorf("Pool is closed")
@@ -101,22 +101,22 @@ func (p *nodePool) Get(timeout time.Duration) (*Conn, error) {
 }
 
 // PendingConsumers count
-func (p *nodePool) PendingConsumers() int32 {
+func (p *NodePool) PendingConsumers() int32 {
 	return atomic.LoadInt32(p.consumersCount)
 }
 
 // ConsumedConnections count
-func (p *nodePool) ConsumedConnections() int32 {
+func (p *NodePool) ConsumedConnections() int32 {
 	return atomic.LoadInt32(p.consumedConnsCount)
 }
 
 // closing checks node required to close
-func (p *nodePool) closing() bool {
+func (p *NodePool) closing() bool {
 	return atomic.LoadInt32(p.closeFlag) != 0
 }
 
 // routine manages node's pool
-func (p *nodePool) routine() {
+func (p *NodePool) routine() {
 
 	defer p.routineWG.Done()
 

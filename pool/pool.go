@@ -11,13 +11,13 @@ import (
 type Pool struct {
 	closeFlag bool
 	nodesLock sync.RWMutex
-	nodes     map[string]*nodePool
+	nodes     map[string]*NodePool
 	balancer  Balancer
 }
 
 // Balancer is an interface to switch node from the pool
 type Balancer interface {
-	get(nodes map[string]*nodePool) (*nodePool, error)
+	Get(nodes map[string]*NodePool) (*NodePool, error)
 }
 
 // New Pool instance
@@ -25,7 +25,7 @@ func New(bal Balancer) *Pool {
 	return &Pool{
 		closeFlag: false,
 		nodesLock: sync.RWMutex{},
-		nodes:     make(map[string]*nodePool),
+		nodes:     make(map[string]*NodePool),
 		balancer:  bal,
 	}
 }
@@ -80,7 +80,7 @@ func (p *Pool) Get(timeout time.Duration) (*Conn, error) {
 	p.nodesLock.RLock()
 
 	// switch node
-	n, err := p.balancer.get(p.nodes)
+	n, err := p.balancer.Get(p.nodes)
 	if err != nil {
 		p.nodesLock.RUnlock()
 		return nil, err

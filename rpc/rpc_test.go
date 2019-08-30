@@ -58,7 +58,7 @@ func TestAddTransaction(t *testing.T) {
 	nonce := uint64(0)
 
 	pkbytes, _ := sumuslib.Unpack58(pk)
-	sig, err := signer.FromPK(pkbytes)
+	sig, err := signer.FromBytes(pkbytes)
 	if err != nil {
 		t.Fatal("Fail:", err)
 	}

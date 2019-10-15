@@ -1,6 +1,6 @@
 # github.com/mr-tron/base58 v1.1.0
 github.com/mr-tron/base58/base58
-# github.com/void616/gm-sumuslib v1.1.0
+# github.com/void616/gm-sumuslib v1.1.1-0.20191010122737-abbbbc505cb9
 github.com/void616/gm-sumuslib
 github.com/void616/gm-sumuslib/amount
 github.com/void616/gm-sumuslib/signer

@@ -1,15 +1,17 @@
 package pool
 
 import (
+	"time"
+
 	"github.com/void616/gm-sumusrpc/conn"
 )
 
-// connHolder holds and controls underlying Sumus RPC connection
+// connHolder holds and controls underlying RPC connection
 type connHolder struct {
 	conn *conn.Conn
 }
 
-// newConnHolder creates connHolder instance and tries to check underlying Sumus RPC connection
+// newConnHolder creates connHolder instance and tries to check underlying RPC connection
 func newConnHolder(addr string, opts conn.Options) (*connHolder, error) {
 	ch := &connHolder{
 		conn: nil,
@@ -18,7 +20,8 @@ func newConnHolder(addr string, opts conn.Options) (*connHolder, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := c.Heartbeat(); err != nil {
+	go c.Serve()
+	if err := c.Heartbeat(time.Second * 10); err != nil {
 		return nil, err
 	}
 	ch.conn = c
@@ -27,7 +30,7 @@ func newConnHolder(addr string, opts conn.Options) (*connHolder, error) {
 
 // Dead checks if underlying connection is dead
 func (c *connHolder) Dead() bool {
-	return c.conn.Closing()
+	return c.conn.Stopping()
 }
 
 // Close closes underlying connection

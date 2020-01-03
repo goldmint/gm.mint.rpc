@@ -23,7 +23,7 @@ func (c *Conn) Close() error {
 	return nil
 }
 
-// Conn gets underlying Sumus RPC connection
+// Conn gets underlying RPC connection
 func (c *Conn) Conn() *conn.Conn {
 	return c.holder.conn
 }

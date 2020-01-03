@@ -4,5 +4,7 @@ github.com/void616/gm-sumuslib v1.1.0 h1:AG05xEAn2i0M0hGQaOt5LjkKCAKtL14hU6IbT2N
 github.com/void616/gm-sumuslib v1.1.0/go.mod h1:+08YwpaXBlYIacZUsi+ln1k1QexlV/P5ZkWl1PKy3ug=
 github.com/void616/gm-sumuslib v1.1.1-0.20191010122737-abbbbc505cb9 h1:edpfHgJ6Xhzo7SqM85gVL73Pebe3dcbgZaDWCl5CRDA=
 github.com/void616/gm-sumuslib v1.1.1-0.20191010122737-abbbbc505cb9/go.mod h1:+08YwpaXBlYIacZUsi+ln1k1QexlV/P5ZkWl1PKy3ug=
+github.com/void616/gm-sumuslib v1.1.1-0.20200103145711-2698e5d2ad92 h1:do/Ve3qBhQV/Oortz8KxjdmuirSLV2UmYw1/9hgHBSg=
+github.com/void616/gm-sumuslib v1.1.1-0.20200103145711-2698e5d2ad92/go.mod h1:8Jomno3QN0tug7s+lw7PKWjriHOieW474nwr2DGte90=
 golang.org/x/crypto v0.0.0-20190123085648-057139ce5d2b h1:Elez2XeF2p9uyVj0yEUDqQ56NFcDtcBNkYP7yv8YbUE=
 golang.org/x/crypto v0.0.0-20190123085648-057139ce5d2b/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=

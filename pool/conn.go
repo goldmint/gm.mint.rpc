@@ -1,6 +1,6 @@
 package pool
 
-import "github.com/void616/gm-sumusrpc/conn"
+import "github.com/void616/gm.mint.rpc/conn"
 
 // Conn represents connection within pool
 type Conn struct {

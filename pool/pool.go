@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/void616/gm-sumusrpc/conn"
+	"github.com/void616/gm.mint.rpc/conn"
 )
 
 // Pool is a pool of pools (nodes) of connections

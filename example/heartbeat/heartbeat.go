@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/void616/gm-sumusrpc/conn"
+	"github.com/void616/gm.mint.rpc/conn"
 )
 
 func main() {

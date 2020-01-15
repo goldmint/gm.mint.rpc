@@ -5,9 +5,9 @@ import (
 	"encoding/hex"
 	"math/big"
 
-	sumuslib "github.com/void616/gm-sumuslib"
-	"github.com/void616/gm-sumusrpc/conn"
-	"github.com/void616/gm-sumusrpc/rpc"
+	mint "github.com/void616/gm.mint"
+	"github.com/void616/gm.mint.rpc/conn"
+	"github.com/void616/gm.mint.rpc/rpc"
 )
 
 // Block model
@@ -53,7 +53,7 @@ func GetBlockByID(ctx context.Context, c *conn.Conn, id *big.Int) (res Block, re
 }
 
 // GetBlockByDigest method
-func GetBlockByDigest(ctx context.Context, c *conn.Conn, digest sumuslib.Digest) (res Block, rerr *rpc.Error, err error) {
+func GetBlockByDigest(ctx context.Context, c *conn.Conn, digest mint.Digest) (res Block, rerr *rpc.Error, err error) {
 	res, rerr, err = Block{}, nil, nil
 
 	rctx, rcancel := c.Receive(ctx)

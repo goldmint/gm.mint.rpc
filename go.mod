@@ -1,5 +1,5 @@
 go 1.13
 
-module github.com/void616/gm-sumusrpc
+module github.com/void616/gm.mint.rpc
 
-require github.com/void616/gm-sumuslib v1.1.1-0.20200103145711-2698e5d2ad92
+require github.com/void616/gm.mint v1.2.0

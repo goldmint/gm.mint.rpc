@@ -6,13 +6,13 @@ import (
 	"os"
 	"time"
 
-	"github.com/void616/gm-sumuslib/amount"
-	"github.com/void616/gm-sumuslib/signer"
-	"github.com/void616/gm-sumuslib/transaction"
+	"github.com/void616/gm.mint/amount"
+	"github.com/void616/gm.mint/signer"
+	"github.com/void616/gm.mint/transaction"
 
-	sumuslib "github.com/void616/gm-sumuslib"
-	"github.com/void616/gm-sumusrpc/conn"
-	"github.com/void616/gm-sumusrpc/request"
+	mint "github.com/void616/gm.mint"
+	"github.com/void616/gm.mint.rpc/conn"
+	"github.com/void616/gm.mint.rpc/request"
 )
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 	go c.Serve()
 
 	// sender
-	pk, err := sumuslib.ParsePrivateKey(os.Getenv("MINTSENDERPK"))
+	pk, err := mint.ParsePrivateKey(os.Getenv("MINTSENDERPK"))
 	if err != nil {
 		log.Fatalln("failed to parse private key:", err)
 	}
@@ -33,13 +33,13 @@ func main() {
 	defer cancel()
 
 	// receiver
-	to, _ := sumuslib.ParsePublicKey("2gqgdwYHECniC5KNZq7Gi2876qJNUVDSKSLSGSuczdJDdNrWi8")
+	to, _ := mint.ParsePublicKey("2gqgdwYHECniC5KNZq7Gi2876qJNUVDSKSLSGSuczdJDdNrWi8")
 
 	// tx
 	tx := transaction.TransferAsset{
 		Address: to,
 		Amount:  amount.MustFromString("0.1337"),
-		Token:   sumuslib.TokenGOLD,
+		Token:   mint.TokenGOLD,
 	}
 
 	// tx nonce

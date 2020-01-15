@@ -3,8 +3,8 @@ package request
 import (
 	"context"
 
-	"github.com/void616/gm-sumusrpc/conn"
-	"github.com/void616/gm-sumusrpc/rpc"
+	"github.com/void616/gm.mint.rpc/conn"
+	"github.com/void616/gm.mint.rpc/rpc"
 )
 
 // BlockchainNode model

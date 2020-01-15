@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	sumuslib "github.com/void616/gm-sumuslib"
-	"github.com/void616/gm-sumusrpc/conn"
-	"github.com/void616/gm-sumusrpc/request"
+	mint "github.com/void616/gm.mint"
+	"github.com/void616/gm.mint.rpc/conn"
+	"github.com/void616/gm.mint.rpc/request"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	var pub sumuslib.PublicKey
+	var pub mint.PublicKey
 
 	res, rerr, err := request.GetWalletState(ctx, c, pub)
 	if err != nil {

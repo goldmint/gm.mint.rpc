@@ -1,10 +1,8 @@
-# Mint RPC client library
 Allows interact with Mint node via JSONRPC. \
-By default node listens port 4010.
+By default node listens port TCP 4010.
 
-Import:
 ```sh
-go get github.com/void616/gm-sumusrpc
+go get github.com/void616/gm.mint.rpc
 ```
 
-See /examples
+See `/examples`

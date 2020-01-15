@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/void616/gm-sumuslib/amount"
+	"github.com/void616/gm.mint/amount"
 )
 
 // Balance is common balance struct (blockchain balance, wallet balance)

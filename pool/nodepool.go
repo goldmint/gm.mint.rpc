@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/void616/gm-sumusrpc/conn"
+	"github.com/void616/gm.mint.rpc/conn"
 )
 
 const (

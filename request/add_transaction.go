@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/hex"
 
-	"github.com/void616/gm-sumuslib/transaction"
-	"github.com/void616/gm-sumusrpc/conn"
-	"github.com/void616/gm-sumusrpc/rpc"
+	"github.com/void616/gm.mint/transaction"
+	"github.com/void616/gm.mint.rpc/conn"
+	"github.com/void616/gm.mint.rpc/rpc"
 )
 
 // AddedTransaction model

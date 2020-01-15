@@ -3,7 +3,7 @@ package pool
 import (
 	"time"
 
-	"github.com/void616/gm-sumusrpc/conn"
+	"github.com/void616/gm.mint.rpc/conn"
 )
 
 // connHolder holds and controls underlying RPC connection

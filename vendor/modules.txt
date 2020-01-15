@@ -1,13 +1,13 @@
 # github.com/mr-tron/base58 v1.1.0
 github.com/mr-tron/base58/base58
-# github.com/void616/gm-sumuslib v1.1.1-0.20200103145711-2698e5d2ad92
-github.com/void616/gm-sumuslib
-github.com/void616/gm-sumuslib/amount
-github.com/void616/gm-sumuslib/block
-github.com/void616/gm-sumuslib/serializer
-github.com/void616/gm-sumuslib/signer
-github.com/void616/gm-sumuslib/signer/ed25519
-github.com/void616/gm-sumuslib/signer/ed25519/internal/edwards25519
-github.com/void616/gm-sumuslib/transaction
+# github.com/void616/gm.mint v1.2.0
+github.com/void616/gm.mint
+github.com/void616/gm.mint/amount
+github.com/void616/gm.mint/block
+github.com/void616/gm.mint/serializer
+github.com/void616/gm.mint/signer
+github.com/void616/gm.mint/signer/ed25519
+github.com/void616/gm.mint/signer/ed25519/internal/edwards25519
+github.com/void616/gm.mint/transaction
 # golang.org/x/crypto v0.0.0-20190123085648-057139ce5d2b
 golang.org/x/crypto/sha3

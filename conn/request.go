@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/void616/gm-sumusrpc/rpc"
+	"github.com/void616/gm.mint.rpc/rpc"
 )
 
 // ReceiveMessage receives next incoming message

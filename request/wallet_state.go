@@ -3,9 +3,9 @@ package request
 import (
 	"context"
 
-	sumuslib "github.com/void616/gm-sumuslib"
-	"github.com/void616/gm-sumusrpc/conn"
-	"github.com/void616/gm-sumusrpc/rpc"
+	mint "github.com/void616/gm.mint"
+	"github.com/void616/gm.mint.rpc/conn"
+	"github.com/void616/gm.mint.rpc/rpc"
 )
 
 // WalletState model
@@ -18,7 +18,7 @@ type WalletState struct {
 }
 
 // GetWalletState method
-func GetWalletState(ctx context.Context, c *conn.Conn, w sumuslib.PublicKey) (res WalletState, rerr *rpc.Error, err error) {
+func GetWalletState(ctx context.Context, c *conn.Conn, w mint.PublicKey) (res WalletState, rerr *rpc.Error, err error) {
 	res, rerr, err = WalletState{}, nil, nil
 
 	rctx, rcancel := c.Receive(ctx)

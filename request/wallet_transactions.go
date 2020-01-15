@@ -3,9 +3,9 @@ package request
 import (
 	"context"
 
-	sumuslib "github.com/void616/gm-sumuslib"
-	"github.com/void616/gm-sumusrpc/conn"
-	"github.com/void616/gm-sumusrpc/rpc"
+	mint "github.com/void616/gm.mint"
+	"github.com/void616/gm.mint.rpc/conn"
+	"github.com/void616/gm.mint.rpc/rpc"
 )
 
 // BinaryWalletTransaction model
@@ -22,7 +22,7 @@ type TextualWalletTransaction struct {
 }
 
 // GetWalletTransactionsBinary method
-func GetWalletTransactionsBinary(ctx context.Context, c *conn.Conn, w sumuslib.PublicKey, max uint32, poolLookup, incoming, outgoing bool) (res []BinaryWalletTransaction, rerr *rpc.Error, err error) {
+func GetWalletTransactionsBinary(ctx context.Context, c *conn.Conn, w mint.PublicKey, max uint32, poolLookup, incoming, outgoing bool) (res []BinaryWalletTransaction, rerr *rpc.Error, err error) {
 	res, rerr, err = []BinaryWalletTransaction{}, nil, nil
 
 	rctx, rcancel := c.Receive(ctx)
@@ -61,7 +61,7 @@ func GetWalletTransactionsBinary(ctx context.Context, c *conn.Conn, w sumuslib.P
 }
 
 // GetWalletTransactionsTextual method
-func GetWalletTransactionsTextual(ctx context.Context, c *conn.Conn, w sumuslib.PublicKey, max uint32, poolLookup, incoming, outgoing bool) (res []TextualWalletTransaction, rerr *rpc.Error, err error) {
+func GetWalletTransactionsTextual(ctx context.Context, c *conn.Conn, w mint.PublicKey, max uint32, poolLookup, incoming, outgoing bool) (res []TextualWalletTransaction, rerr *rpc.Error, err error) {
 	res, rerr, err = []TextualWalletTransaction{}, nil, nil
 
 	rctx, rcancel := c.Receive(ctx)

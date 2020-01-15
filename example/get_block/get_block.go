@@ -8,12 +8,12 @@ import (
 	"os"
 	"time"
 
-	sumuslib "github.com/void616/gm-sumuslib"
-	"github.com/void616/gm-sumuslib/block"
-	"github.com/void616/gm-sumuslib/serializer"
-	"github.com/void616/gm-sumuslib/transaction"
-	"github.com/void616/gm-sumusrpc/conn"
-	"github.com/void616/gm-sumusrpc/request"
+	mint "github.com/void616/gm.mint"
+	"github.com/void616/gm.mint/block"
+	"github.com/void616/gm.mint/serializer"
+	"github.com/void616/gm.mint/transaction"
+	"github.com/void616/gm.mint.rpc/conn"
+	"github.com/void616/gm.mint.rpc/request"
 )
 
 func main() {
@@ -41,7 +41,7 @@ func main() {
 
 	// ---
 
-	var digest sumuslib.Digest
+	var digest mint.Digest
 
 	headerCbk := func(h *block.Header) error {
 		digest = h.Digest
@@ -52,7 +52,7 @@ func main() {
 		log.Println("Signers:", h.SignersCount)
 		log.Println("Consensus round:", h.ConsensusRound)
 		log.Println("Transactions:", h.TransactionsCount)
-		log.Println("Time:", sumuslib.StampToTime(h.Timestamp).String())
+		log.Println("Time:", mint.StampToTime(h.Timestamp).String())
 		return nil
 	}
 

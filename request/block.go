@@ -1,17 +1,37 @@
 package request
 
 import (
+	"bytes"
 	"context"
 	"encoding/hex"
+	"errors"
 	"math/big"
 
 	mint "github.com/void616/gm.mint"
 	"github.com/void616/gm.mint.rpc/conn"
 	"github.com/void616/gm.mint.rpc/rpc"
+	"github.com/void616/gm.mint/block"
 )
+
+var errHeaderOnly = errors.New("read header only")
 
 // Block model
 type Block []byte
+
+// Header parses and returns block's header
+func (b Block) Header() (*block.Header, error) {
+	var header *block.Header
+	var headerCbk = func(h *block.Header) error {
+		header = h
+		return errHeaderOnly
+	}
+
+	// parse block
+	if err := block.Parse(bytes.NewBuffer(b), headerCbk, nil); err != nil && err != errHeaderOnly {
+		return nil, err
+	}
+	return header, nil
+}
 
 // GetBlockByID method
 func GetBlockByID(ctx context.Context, c *conn.Conn, id *big.Int) (res Block, rerr *rpc.Error, err error) {

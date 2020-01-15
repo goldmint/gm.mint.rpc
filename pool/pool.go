@@ -83,9 +83,8 @@ func (p *Pool) AddNode(addr string, concurrency uint16, copts conn.Options) bool
 	return false
 }
 
-// Get gets free connection from the pool. *Conn should be released with Close()
-func (p *Pool) Get(timeout time.Duration) (*Conn, error) {
-
+// Get gets free *conn.Conn from the pool
+func (p *Pool) Get(timeout time.Duration) (*conn.Conn, func(), error) {
 	p.nodesLock.RLock()
 
 	// nodes meta
@@ -102,18 +101,18 @@ func (p *Pool) Get(timeout time.Duration) (*Conn, error) {
 		}
 	}
 
-	// switch node
+	// select node
 	m, err := p.balancer.Get(meta)
 	if err != nil {
 		p.nodesLock.RUnlock()
-		return nil, err
+		return nil, nil, err
 	}
 
 	// find node by selected meta
 	n, ok := p.nodes[m.Address]
 	if !ok {
 		p.nodesLock.RUnlock()
-		return nil, fmt.Errorf("failed to get node " + m.Address)
+		return nil, nil, fmt.Errorf("failed to get node " + m.Address)
 	}
 
 	p.nodesLock.RUnlock()
@@ -121,8 +120,10 @@ func (p *Pool) Get(timeout time.Duration) (*Conn, error) {
 	// get connection from selected node
 	ret, err := n.Get(timeout)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return ret, nil
+	return ret.Conn(), func() {
+		ret.Close()
+	}, nil
 }

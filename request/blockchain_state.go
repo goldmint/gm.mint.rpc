@@ -3,19 +3,20 @@ package request
 import (
 	"context"
 
+	mint "github.com/void616/gm.mint"
 	"github.com/void616/gm.mint.rpc/conn"
 	"github.com/void616/gm.mint.rpc/rpc"
 )
 
 // BlockchainState model
 type BlockchainState struct {
-	LastBlockDigest     string  `json:"last_block_digest"`
-	LastBlockMerkleRoot string  `json:"last_block_merkle_root"`
-	BlockCount          *BigInt `json:"block_count"`
-	TransactionCount    *BigInt `json:"transaction_count"`
-	WalletCount         *BigInt `json:"wallet_count"`
-	NodeCount           int     `json:"node_count"`
-	Balance             Balance `json:"balance"`
+	LastBlockDigest     mint.Digest `json:"last_block_digest"`
+	LastBlockMerkleRoot mint.Digest `json:"last_block_merkle_root"`
+	BlockCount          *BigInt     `json:"block_count"`
+	TransactionCount    *BigInt     `json:"transaction_count"`
+	WalletCount         *BigInt     `json:"wallet_count"`
+	NodeCount           int         `json:"node_count"`
+	Balance             Balance     `json:"balance"`
 	Node                struct {
 		BlockchainState string `json:"blockchain_state"`
 		LastError       string `json:"last_error"`

@@ -3,6 +3,7 @@ package request
 import (
 	"context"
 
+	mint "github.com/void616/gm.mint"
 	"github.com/void616/gm.mint.rpc/conn"
 	"github.com/void616/gm.mint.rpc/rpc"
 )
@@ -10,9 +11,9 @@ import (
 // WalletsDump model
 type WalletsDump struct {
 	Wallets []struct {
-		PublicKey string   `json:"k"`
-		Balance   Balance  `json:"b"`
-		Tags      []string `json:"t"`
+		PublicKey mint.PublicKey `json:"k"`
+		Balance   Balance        `json:"b"`
+		Tags      []string       `json:"t"`
 	} `json:"wallets,omitempty"`
 	LocalFile string `json:"local_file,omitempty"`
 }

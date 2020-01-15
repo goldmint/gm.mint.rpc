@@ -3,15 +3,16 @@ package request
 import (
 	"context"
 
+	mint "github.com/void616/gm.mint"
 	"github.com/void616/gm.mint.rpc/conn"
 	"github.com/void616/gm.mint.rpc/rpc"
 )
 
 // BlockchainNode model
 type BlockchainNode struct {
-	Index     uint32 `json:"index"`
-	PublicKey string `json:"public_key"`
-	IP        string `json:"ip"`
+	Index     uint32         `json:"index"`
+	PublicKey mint.PublicKey `json:"public_key"`
+	IP        string         `json:"ip"`
 }
 
 // GetBlockchainNodes method

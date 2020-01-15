@@ -16,9 +16,9 @@ type BinaryWalletTransaction struct {
 
 // TextualWalletTransaction model
 type TextualWalletTransaction struct {
-	Desc   string  `json:"desc"`
-	Digest string  `json:"digest"`
-	Block  *BigInt `json:"block"`
+	Desc   string      `json:"desc"`
+	Digest mint.Digest `json:"digest"`
+	Block  *BigInt     `json:"block"`
 }
 
 // GetWalletTransactionsBinary method

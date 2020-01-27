@@ -58,11 +58,6 @@ func (c *Conn) Receive(ctx context.Context) (rctx context.Context, cancel func()
 
 		c.recvLock.Lock()
 		defer c.recvLock.Unlock()
-		// one receiver at one time
-		if c.recvContext == nil {
-			panic(errors.New("incorrect usage, concurrent receiving"))
-		}
-
 		// clear recv's client context
 		c.recvContext = nil
 	}

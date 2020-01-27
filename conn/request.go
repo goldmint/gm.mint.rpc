@@ -20,7 +20,7 @@ func (c *Conn) ReceiveMessage(rctx context.Context) (rpc.IncomingMessage, error)
 }
 
 // ReceiveEvent receives next event defined by method name
-func (c *Conn) ReceiveEvent(rctx context.Context, method string) (rpc.IncomingMessage, error) {
+func (c *Conn) ReceiveEvent(rctx context.Context, method string) (*rpc.Event, error) {
 	for {
 		msg, err := c.ReceiveMessage(rctx)
 		if err != nil {
@@ -29,7 +29,7 @@ func (c *Conn) ReceiveEvent(rctx context.Context, method string) (rpc.IncomingMe
 		switch m := msg.(type) {
 		case *rpc.Event:
 			if m.Method == method {
-				return msg, nil
+				return m, nil
 			}
 		}
 	}

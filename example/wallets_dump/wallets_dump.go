@@ -21,7 +21,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	res, rerr, err := request.DumpWallets(ctx, c, false)
+	res, rerr, err := request.DumpWallets(ctx, c, true, false)
 	if err != nil {
 		log.Println("error:", err)
 		return
@@ -31,5 +31,11 @@ func main() {
 		return
 	}
 
-	log.Printf("Result: %+v", res)
+	states, err := res.Wallets()
+	if err != nil {
+		log.Println("parsing error:", err)
+		return
+	}
+
+	log.Printf("Result: %+v", states)
 }

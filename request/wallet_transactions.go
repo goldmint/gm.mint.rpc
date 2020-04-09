@@ -6,12 +6,14 @@ import (
 	mint "github.com/void616/gm.mint"
 	"github.com/void616/gm.mint.rpc/conn"
 	"github.com/void616/gm.mint.rpc/rpc"
+	"github.com/void616/gm.mint/transaction"
 )
 
 // BinaryWalletTransaction model
 type BinaryWalletTransaction struct {
-	Data  ByteArray `json:"data"`
-	Block *BigInt   `json:"block"`
+	Data  ByteArray        `json:"data"`
+	Code  transaction.Code `json:"code"`
+	Block *BigInt          `json:"block"`
 }
 
 // TextualWalletTransaction model

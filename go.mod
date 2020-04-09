@@ -1,4 +1,4 @@
-go 1.13
+go 1.14
 
 module github.com/void616/gm.mint.rpc
 

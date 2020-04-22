@@ -7,5 +7,5 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mr-tron/base58 v1.1.3 // indirect
 	github.com/pierrec/lz4 v2.5.1+incompatible
-	github.com/void616/gm.mint v1.2.3
+	github.com/void616/gm.mint v1.2.4
 )
